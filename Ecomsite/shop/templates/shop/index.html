@@ -9,11 +9,46 @@
         <meta name="description" content="">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static "shop/style.css" %}">
+        <link rel="stylesheet" href="{% static "shop/stylee.css" %}">
+    
+        <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+
     </head>
     <body>
         
         <div class='container'>
+
+            <div class="row">
+                <div class="col=md-12">
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <div class="container-fluid">
+                          <a class="navbar-brand" href="#">Navbar</a>
+                          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                          </button>
+                          <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                              <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                              </li>
+                              <li class="nav-item">
+                                <a id="cart" class="nav-link" href="#">Cart(0)</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </nav>
+                </div>
+            </div>
 
 
             <div class='row'>
@@ -44,20 +79,111 @@
                             <div class='card-text'>
                                 {{product.price}}
                             </div>
+
+                            <a href="/{{product.id}}" class="btn btn-warning">View</a>
+                            <button id="{{product.id}}" class="btn atc btn-warning">Add Cart</button>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
+
+            <div class="row">
+                <div class="col-md-3 offset-md-4">
+                    <ul class="pagination">
+                        {% if product_object.has_previous %}
+                        
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ product_object.previous_page_number }}">Previous</a>
+                            </li>
+
+                        {% endif %}
+
+                            
+                            <li class="page-item active">
+                                <a class="page-link" href="?page={{ product_object.number }}">Current</a>
+                            </li>
+
+                        {% if product_object.has_next %}
+                        
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ product_object.next_page_number }}">Next</a>
+                            </li>
+                            
+                        {% endif %}
+
+                    </ul>
+
+                </div>
+            </div>
+
         </div>
 
         <script src="" async defer></script>
     </body>
+
+    {% comment %} <script type="text/javascript">
+    
+    console.log('This is working');
+
+    if (localStorage.getItem('cart')==null){
+        var cart={};
+    } 
+    else{
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+    $(document).on('click','.atc', function(){
+        console.log("The add to cart button is clicked");
+        var item_id =this.id.toString();
+        console.log(item_id);
+
+        if (cart[item_id] != undefined){
+            cart[item_id] = cart[item_id] + 1;
+
+        }
+        else{
+            cart[item_id] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart',JSON.stringify(cart));
+
+        //pop up massage
+        //alert("Item added to cart")
+    });
+    
+    </script> {% endcomment %}
+    <script type="text/javascript">
+        console.log("This is working")
+        if (localStorage.getItem('cart')==null){
+            var cart = {};
+        }
+        else{
+            cart = JSON.parse(localStorage.getItem('cart'));
+        }
+        $(document).on('click','.atc', function(){
+            item_id = this.id.toString();
+            console.log(item_id)
+        
+        
+        if (cart[item_id] != undefined){
+            cart[item_id] = cart[item_id] + 1;
+        }
+        else{
+            cart[item_id] = 1;
+        }
+        console.log(cart)
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        document.getElementById("cart").innerHTML = "Cart("+ Object.keys(cart).length +")";
+        
+    })
+    </script>
+
+
 </html>
 
 
 
-
-{% for product in product_object %}
+{% comment %} {% for product in product_object %}
     
-{% endfor %}
+{% endfor %} {% endcomment %}
